@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+
+<?import javafx.scene.control.skin.SplitPaneSkin.Content?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+   <left>
+      <VBox prefWidth="260" spacing="0.0">
+          <children>
+              <!--Samochów-->
+              <TitledPane text="Samochód" expanded="true">
+                  <content>
+                      <GridPane hgap="5.0" vgap="5.0">
+                          <columnConstraints>
+                              <ColumnConstraints hgrow="NEVER"/>
+                              <ColumnConstraints hgrow="ALWAYS" />
+                          </columnConstraints>
+                          <rowConstraints>
+                              <RowConstraints/>
+                              <RowConstraints/>
+                              <RowConstraints/>
+                              <RowConstraints/>
+                              <RowConstraints/>
+                          </rowConstraints>
+                          <children>
+                              <!-- wiersz 0 -->
+                              <Label text="Model"
+                                     GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                              <TextField fx:id="tfCarModel"
+                                         GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                              <!-- wiersz 1 -->
+                              <Label text="Nr rejestracyjny"
+                                     GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                              <TextField fx:id="tfCarPlate"
+                                         GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                              <!-- wiersz 2 -->
+                              <Label text="Waga"
+                                     GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                              <TextField fx:id="tfCarWeight"
+                                         GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                              <!-- wiersz 3 -->
+                              <Label text="Prędkość"
+                                     GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                              <TextField fx:id="tfCarSpeed"
+                                         GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                              <!-- wiersz 4: przyciski -->
+                              <HBox spacing="5.0"
+                                    GridPane.rowIndex="4" GridPane.columnIndex="0"
+                                    GridPane.columnSpan="2">
+                                  <children>
+                                      <Button text="Włącz" />
+                                      <Button text="Wyłącz"/>
+                                  </children>
+                              </HBox>
+                          </children>
+                      </GridPane>
+                  </content>
+              </TitledPane>
+              <!--Skrzynia biegów-->
+              <TitledPane text="Skrzynia Biegów" expanded="true">
+                  <content>
+                      <GridPane hgap="5.0" vgap="5.0">
+                          <columnConstraints>
+                              <ColumnConstraints hgrow="NEVER"/>
+                              <ColumnConstraints hgrow="ALWAYS" />
+                          </columnConstraints>
+                          <rowConstraints>
+                              <RowConstraints/>
+                              <RowConstraints/>
+                              <RowConstraints/>
+                              <RowConstraints/>
+                              <RowConstraints/>
+                          </rowConstraints>
+                          <!--Wiersz 1-->
+                          <Label text="Nazwa"
+                                 GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                          <TextField fx:id="tfGearName"
+                                     GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                          <!--Wiersz 2-->
+                          <Label text="Cena"
+                                 GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                          <TextField fx:id="tfGearPrice"
+                                     GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                          <!--Wiersz 13-->
+                          <Label text="Waga"
+                                 GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                          <TextField fx:id="tfGearWeight"
+                                     GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                          <!--Wiersz 4-->
+                          <Label text="Bieg"
+                                 GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                          <TextField fx:id="tfGearCurrent"
+                                     GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                          <HBox spacing="5.0"
+                                GridPane.rowIndex="4" GridPane.columnIndex="0"
+                                GridPane.columnSpan="2">
+                              <children>
+                                  <Button text="Zwiększ Bieg" />
+                                  <Button text="Zmniejsz Bieg"/>
+                              </children>
+                          </HBox>
+                      </GridPane>
+                  </content>
+              </TitledPane>
+
+              <!--Silnik-->
+              <TitledPane text="Silnik" expanded="true">
+                  <content>
+                      <GridPane hgap="5.0" vgap="5.0">
+                          <columnConstraints>
+                              <ColumnConstraints hgrow="NEVER"/>
+                              <ColumnConstraints hgrow="ALWAYS" />
+                          </columnConstraints>
+                          <rowConstraints>
+                              <RowConstraints/>
+                              <RowConstraints/>
+                              <RowConstraints/>
+                              <RowConstraints/>
+                              <RowConstraints/>
+                          </rowConstraints>
+                          <!--Wiersz 1-->
+                          <Label text="Nazwa"
+                                 GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                          <TextField fx:id="tfEngineName"
+                                     GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                          <!--Wiersz 2-->
+                          <Label text="Cena"
+                                 GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                          <TextField fx:id="tfEnginePrice"
+                                     GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                          <!--Wiersz 13-->
+                          <Label text="Waga"
+                                 GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                          <TextField fx:id="tfEngineWeight"
+                                     GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                          <!--Wiersz 4-->
+                          <Label text="Obroty"
+                                 GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                          <TextField fx:id="tfEngineCurrent"
+                                     GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                          <HBox spacing="5.0"
+                                GridPane.rowIndex="4" GridPane.columnIndex="0"
+                                GridPane.columnSpan="2">
+                              <children>
+                                  <Button text="Dodaj Gazu" />
+                                  <Button text="Luzuj"/>
+                              </children>
+                          </HBox>
+                      </GridPane>
+                  </content>
+              </TitledPane>
+
+              <!--Sprzęgło-->
+              <TitledPane text="Sprzęgło" expanded="true">
+                  <content>
+                      <GridPane hgap="5.0" vgap="5.0">
+                          <columnConstraints>
+                              <ColumnConstraints hgrow="NEVER"/>
+                              <ColumnConstraints hgrow="ALWAYS" />
+                          </columnConstraints>
+                          <rowConstraints>
+                              <RowConstraints/>
+                              <RowConstraints/>
+                              <RowConstraints/>
+                              <RowConstraints/>
+                              <RowConstraints/>
+                          </rowConstraints>
+                          <!--Wiersz 1-->
+                          <Label text="Nazwa"
+                                 GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                          <TextField fx:id="tfGearClutchName"
+                                     GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                          <!--Wiersz 2-->
+                          <Label text="Cena"
+                                 GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                          <TextField fx:id="tfClutchPrice"
+                                     GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                          <!--Wiersz 13-->
+                          <Label text="Waga"
+                                 GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                          <TextField fx:id="tfClutchWeight"
+                                     GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                          <!--Wiersz 4-->
+                          <Label text="Stan"
+                                 GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                          <TextField fx:id="tfClutchCurrent"
+                                     GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                          <HBox spacing="5.0"
+                                GridPane.rowIndex="4" GridPane.columnIndex="0"
+                                GridPane.columnSpan="2">
+                              <children>
+                                  <Button text="Naciśnij" />
+                                  <Button text="Zwolnij"/>
+                              </children>
+                          </HBox>
+                      </GridPane>
+                  </content>
+              </TitledPane>
+          </children>
+      </VBox>
+   </left>
+</BorderPane>
