@@ -7,7 +7,8 @@
 
 
 <?import javafx.scene.control.skin.SplitPaneSkin.Content?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1024.0" prefWidth="1024.0" fx:controller="com.example.interfejs.HelloController" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+
    <left>
       <VBox prefWidth="260" spacing="0.0">
           <children>
@@ -56,8 +57,8 @@
                                     GridPane.rowIndex="4" GridPane.columnIndex="0"
                                     GridPane.columnSpan="2">
                                   <children>
-                                      <Button text="Włącz" />
-                                      <Button text="Wyłącz"/>
+                                      <Button fx:id="włączButton" text="Włącz"  />
+                                      <Button fx:id="włączButton" text="Wyłącz"/>
                                   </children>
                               </HBox>
                           </children>
@@ -104,8 +105,8 @@
                                 GridPane.rowIndex="4" GridPane.columnIndex="0"
                                 GridPane.columnSpan="2">
                               <children>
-                                  <Button text="Zwiększ Bieg" />
-                                  <Button text="Zmniejsz Bieg"/>
+                                  <Button fx:id="zwiększbiegButton" text="Zwiększ Bieg" />
+                                  <Button fx:id="zmniejszbiegButton" text="Zmniejsz Bieg"/>
                               </children>
                           </HBox>
                       </GridPane>
@@ -152,8 +153,8 @@
                                 GridPane.rowIndex="4" GridPane.columnIndex="0"
                                 GridPane.columnSpan="2">
                               <children>
-                                  <Button text="Dodaj Gazu" />
-                                  <Button text="Luzuj"/>
+                                  <Button fx:id="dodajgazuBatton" text="Dodaj Gazu" />
+                                  <Button fx:id="luzujBatton" text="Luzuj"/>
                               </children>
                           </HBox>
                       </GridPane>
@@ -200,8 +201,8 @@
                                 GridPane.rowIndex="4" GridPane.columnIndex="0"
                                 GridPane.columnSpan="2">
                               <children>
-                                  <Button text="Naciśnij" />
-                                  <Button text="Zwolnij"/>
+                                  <Button fx:id="zaciągnijButton" text="Zaciągnij" />
+                                  <Button fx:id="zwolnijButton" text="Zwolnij"/>
                               </children>
                           </HBox>
                       </GridPane>
@@ -210,4 +211,35 @@
           </children>
       </VBox>
    </left>
+
+    <top>
+        <VBox>
+
+            <!-- GÓRNE MENU -->
+            <MenuBar>
+                <menus>
+                    <Menu text="Plik">
+                        <items>
+                            <MenuItem text="Nowy"    onAction="#onMenuNowy"/>
+                            <MenuItem text="Zamknij" onAction="#onMenuZamknij"/>
+                        </items>
+                    </Menu>
+                    <Menu text="Edycja">
+                        <items>
+                            <MenuItem text="Usuń" onAction="#onMenuUsun"/>
+                        </items>
+                    </Menu>
+                </menus>
+            </MenuBar>
+
+            <!-- PASEK Z SAMOCHODEM -->
+            <HBox spacing="10" alignment="CENTER_LEFT" prefHeight="40">
+                <Label text="Samochód"/>
+                <ComboBox fx:id="samochodComboBox" prefWidth="160.0"/>
+                <Button text="Dodaj nowy" />
+                <Button text="Usuń" />
+            </HBox>
+
+        </VBox>
+    </top>
 </BorderPane>
