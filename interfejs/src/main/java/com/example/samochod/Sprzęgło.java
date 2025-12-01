@@ -1,28 +1,26 @@
 package com.example.samochod;
 
-public class Sprzęgło {
+public class Sprzęgło extends Komponent {
 
-    private boolean stanSprzęgła;
+    private boolean wciśnięte;
 
-
-    public void wciśnij(){
-            stanSprzęgła=true;
-        }
-
-    public void zwolnij(){
-        stanSprzęgła=false;
+    public Sprzęgło(String nazwa, double cena, double waga) {
+        super(nazwa, cena, waga);
+        this.wciśnięte = false;
     }
 
-    public void getStanSprzęgła(){
-        if(stanSprzęgła==true){
-            System.out.println("Sprzęgło zaciągnięte");
-        }
-        else {
-            System.out.println("Sprzęgło zwolnione");
-        }
+    public void zaciągnij() {
+        wciśnięte = true;
 
     }
 
+    public void zwolnij() {
+        wciśnięte = false;
+    }
+
+    public boolean isWciśnięte() {
+        return wciśnięte ;
+    }
 
 
 }

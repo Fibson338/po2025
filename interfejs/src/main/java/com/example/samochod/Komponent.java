@@ -1,40 +1,38 @@
 package com.example.samochod;
 
-public class Komponent {
-
-    private double cena;
-    private String producent;
-    private String model;
+public abstract class Komponent {
 
     private String nazwa;
+    private double cena;
     private double waga;
 
-    public Komponent(String nazwa, double waga, double cena) {
+    public Komponent(String nazwa, double cena, double waga) {
         this.nazwa = nazwa;
-        this.waga = waga;
         this.cena = cena;
-        this.producent = nazwa;
-        this.model = "";
+        this.waga = waga;
     }
 
-    public void getProduceny() {
-        System.out.println("Producent: " + producent);
+    public String getNazwa() {
+        return nazwa;
     }
 
-    public void getModel() {
-        System.out.println("Model: " + model);
+    public void setNazwa(String nazwa) {
+        this.nazwa = nazwa;
     }
 
-    public void getCena() {
-        System.out.println("Cena: " + cena);
+    public double getCena() {
+        return cena;
     }
 
-
-    public void getNazwa() {
-        System.out.println("Nazwa: " + nazwa);
+    public void setCena(double cena) {
+        this.cena = cena;
     }
 
-    public void getWaga() {
-        System.out.println("Waga: " + waga + " kg");
+    public double getWaga() {
+        return waga;
+    }
+
+    public void setWaga(double waga) {
+        this.waga = waga;
     }
 }

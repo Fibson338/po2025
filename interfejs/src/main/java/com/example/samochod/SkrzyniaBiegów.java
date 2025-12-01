@@ -1,50 +1,32 @@
 package com.example.samochod;
 
-public class SkrzyniaBiegów {
+public class SkrzyniaBiegów extends Komponent {
 
-    private int aktualnyBieg;
-    private int ilośćBiegów;
-    private double aktualnePrzełożenie; // z UML
+    // -1 – wsteczny, 0 – luz, 1..6 – biegi do przodu
+    private int bieg;
 
-    public SkrzyniaBiegów(int ilośćBiegów, int aktualnyBieg) {
-        this.ilośćBiegów = ilośćBiegów;
-        this.aktualnyBieg = aktualnyBieg;
-        this.aktualnePrzełożenie = 0.0;
+    public SkrzyniaBiegów(String nazwa, double cena, double waga) {
+        super(nazwa, cena, waga);
+        this.bieg = 0;
     }
 
     public void zwiększBieg() {
-        if (aktualnyBieg <= ilośćBiegów) {
-            aktualnyBieg++;
-            aktualnePrzełożenie = aktualnyBieg; // prosta zależność
-        } else {
-            System.out.println("Nie da się zwiększyć biegu.");
+        if (bieg < 6) {
+            bieg++;
         }
     }
 
     public void zmniejszBieg() {
-        if (aktualnyBieg != 0) {
-            aktualnyBieg--;
-            aktualnePrzełożenie = aktualnyBieg;
-        } else {
-            System.out.println("Nie da się zmniejszyć biegu.");
+        if (bieg > -1) {  // nie schodzimy poniżej wstecznego
+            bieg--;
         }
     }
 
-    public void getAktualnyBieg() {
-        System.out.println("Aktualny bieg: " + aktualnyBieg);
+    public int getBieg() {
+        return bieg;
     }
 
-    public void BiegZero() {
-        aktualnyBieg = 0;
-        aktualnePrzełożenie = 0.0;
-    }
-
-
-    public void getAktBieg() {
-        System.out.println("Aktualny bieg: " + aktualnyBieg);
-    }
-
-    public void getAktPrzełożenie() {
-        System.out.println("Aktualne przełożenie: " + aktualnePrzełożenie);
+    public void setBieg(int bieg) {
+        this.bieg = bieg;
     }
 }

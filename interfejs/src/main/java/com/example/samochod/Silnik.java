@@ -1,42 +1,52 @@
 package com.example.samochod;
 
-public class Silnik {
+public class Silnik extends Komponent {
 
-    private int maxObroty;
     private int obroty;
+    private boolean włączony;
 
-    public Silnik (int maxObroty, int obroty) {
-        this.maxObroty = maxObroty;
-        this.obroty = obroty;
+    public Silnik(String nazwa, double cena, double waga) {
+        super(nazwa, cena, waga);
+        this.obroty = 0;
+        this.włączony = false;
     }
 
-    public void uruchom(){
-        obroty = 800;
-        System.out.println("Silnik uruchomiony, obroty = " + obroty);
+    public void włącz() {
+        włączony = true;
+        if (obroty == 0) {
+            obroty = 0;
+        }
     }
 
-
-    public void zatrzymaj(){
+    public void wyłącz() {
+        włączony = false;
         obroty = 0;
-        System.out.println("Silnik zatrzymany, obroty = " + obroty);
     }
 
-    public void zwiększObroty(){
-        if(obroty < maxObroty){
-            obroty++;
-        }
-        else{
-            System.out.println("Nie da się zwiększyć obrotów.");
+    public void zwiększObroty() {
+        if (włączony &&obroty < 6250) {
+            obroty += 250;
         }
     }
 
-    public void zmniejszObroty(){
-        if(obroty <= 0){
-            obroty--;
-        }
-        else{
-            System.out.println("Nie da się zmniejszyć obrotów.");
+    public void zmniejszObroty() {
+        if (włączony && obroty != 0) {
+            obroty -= 250;
+            if (obroty < 0) {
+                obroty = 0;
+            }
         }
     }
 
+    public boolean isWłączony() {
+        return włączony;
+    }
+
+    public int getObroty() {
+        return obroty;
+    }
+
+    public int zeroObroty(){
+        return obroty = 0;
+    }
 }

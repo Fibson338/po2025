@@ -2,68 +2,111 @@ package com.example.samochod;
 
 public class Samochód {
 
-    private Silnik silnik;
-    private SkrzyniaBiegów skrzynia;
-    private Sprzęgło sprzęgło;
-    private Pozycja pozycja;
-
-    private boolean stanWłączenia;
-    private String nrRejest;
     private String model;
-    private double prędkośćMax;
-
-    private double aktualnaPrędkość;
+    private String numerRejestracyjny;
     private double waga;
+    private double prędkość;
 
-    public Samochód() {
-        this.silnik = new Silnik(2000, 0);
-        this.skrzynia = new SkrzyniaBiegów(5, 0);
-        this.sprzęgło = new Sprzęgło();
-        this.pozycja = new Pozycja();
+    private final Silnik silnik;
+    private final SkrzyniaBiegów skrzynia;
+    private final Sprzęgło sprzęgło;
 
-        this.stanWłączenia = false;
-        this.nrRejest = "BRAK";
-        this.model = "NIEZNANY";
-        this.prędkośćMax = 200.0;
-        this.aktualnaPrędkość = 0.0;
-        this.waga = 1200.0; // przykładowa wartość
+    public Samochód(String model,
+                    String numerRejestracyjny,
+                    double waga,
+                    Silnik silnik,
+                    SkrzyniaBiegów skrzynia,
+                    Sprzęgło sprzęgło) {
+        this.model = model;
+        this.numerRejestracyjny = numerRejestracyjny;
+        this.waga = waga;
+        this.prędkość = 0.0;
+        this.silnik = silnik;
+        this.skrzynia = skrzynia;
+        this.sprzęgło = sprzęgło;
     }
 
     public void włącz() {
-        this.silnik.uruchom();
-        this.stanWłączenia = true;
+        silnik.włącz();
     }
 
     public void wyłącz() {
-        this.silnik.zatrzymaj();
-        this.skrzynia.BiegZero();
-        this.stanWłączenia = false;
-        this.aktualnaPrędkość = 0.0;
+        silnik.wyłącz();
+        prędkość = 0;
+
+    }
+
+    public boolean isWłączony() {
+        return silnik.isWłączony();
+    }
+
+    public void zwiększBieg() {
+        if(isWłączony()) {
+            skrzynia.zwiększBieg();
+        }
+    }
+
+    public void zmniejszBieg() {
+        if(isWłączony()) {
+            skrzynia.zmniejszBieg();
+        }
+    }
+
+    public void dodajGazu() {
+        silnik.zwiększObroty();
+        if(prędkość <=240 && isWłączony()) {
+            prędkość += 10;
+        }
+    }
+
+    public void luzujGazu() {
+        silnik.zmniejszObroty();
+        if (prędkość >= 10 && isWłączony() ) {
+            prędkość -= 10;
+        }
+    }
+
+    public void zaciągnijSprzęgło() {
+        sprzęgło.zaciągnij();
+        prędkość = 0 ;
+        silnik.zeroObroty();
+    }
+
+    public void zwolnijSprzęgło() {
+        sprzęgło.zwolnij();
     }
 
 
-    public void jedźDo(double x, double y) {
-        this.pozycja.aktualizacjaPozycja(x, y);
+    public String getModel() {
+        return model;
     }
 
-
-    public void jedźDo(Pozycja cel) {
-        this.pozycja = cel;
+    public String getNumerRejestracyjny() {
+        return numerRejestracyjny;
     }
 
-    // --------- METODY Z UML ---------
-
-    public void getWaga() {
-        System.out.println("Waga samochodu: " + waga + " kg");
+    public double getWaga() {
+        return waga;
     }
 
-    public void getAktPredkosc() {
-        System.out.println("Aktualna prędkość: " + aktualnaPrędkość + " km/h");
+    public double getPrędkość() {
+        return prędkość;
     }
 
-    public void getAktPozycja() {
-        System.out.print("Aktualna pozycja: ");
-        this.pozycja.getPozycja();
+    public Silnik getSilnik() {
+        return silnik;
+    }
+
+    public SkrzyniaBiegów getSkrzynia() {
+        return skrzynia;
+    }
+
+    public Sprzęgło getSprzęgło() {
+        return sprzęgło;
+    }
+
+    @Override
+    public String toString() {
+        return model + " (" + numerRejestracyjny + ")";
     }
 }
-
