@@ -35,4 +35,10 @@ public abstract class Komponent {
     public void setWaga(double waga) {
         this.waga = waga;
     }
+
+    @Override
+    public String toString() {
+        return getNazwa();
+    }
+
 }

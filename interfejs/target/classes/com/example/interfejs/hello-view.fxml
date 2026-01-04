@@ -38,22 +38,22 @@
                                 <Label text="Model"
                                        GridPane.rowIndex="0" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfCarModel"
-                                           GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                           GridPane.rowIndex="0" GridPane.columnIndex="1" editable="false"/>
 
                                 <Label text="Nr rejestracyjny"
                                        GridPane.rowIndex="1" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfCarPlate"
-                                           GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                                           GridPane.rowIndex="1" GridPane.columnIndex="1" editable="false"/>
 
                                 <Label text="Waga"
                                        GridPane.rowIndex="2" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfCarWeight"
-                                           GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                                           GridPane.rowIndex="2" GridPane.columnIndex="1" editable="false"/>
 
                                 <Label text="Prędkość"
                                        GridPane.rowIndex="3" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfCarSpeed"
-                                           GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                                           GridPane.rowIndex="3" GridPane.columnIndex="1" editable="false"/>
 
                                 <HBox spacing="5.0"
                                       GridPane.rowIndex="4" GridPane.columnIndex="0"
@@ -89,22 +89,22 @@
                                 <Label text="Nazwa"
                                        GridPane.rowIndex="0" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfGearName"
-                                           GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                           GridPane.rowIndex="0" GridPane.columnIndex="1" editable="false"/>
 
                                 <Label text="Cena"
                                        GridPane.rowIndex="1" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfGearPrice"
-                                           GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                                           GridPane.rowIndex="1" GridPane.columnIndex="1" editable="false"/>
 
                                 <Label text="Waga"
                                        GridPane.rowIndex="2" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfGearWeight"
-                                           GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                                           GridPane.rowIndex="2" GridPane.columnIndex="1" editable="false"/>
 
                                 <Label text="Bieg"
                                        GridPane.rowIndex="3" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfGearCurrent"
-                                           GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                                           GridPane.rowIndex="3" GridPane.columnIndex="1" editable="false"/>
 
                                 <HBox spacing="5.0"
                                       GridPane.rowIndex="4" GridPane.columnIndex="0"
@@ -140,22 +140,22 @@
                                 <Label text="Nazwa"
                                        GridPane.rowIndex="0" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfEngineName"
-                                           GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                           GridPane.rowIndex="0" GridPane.columnIndex="1" editable="false"/>
 
                                 <Label text="Cena"
                                        GridPane.rowIndex="1" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfEnginePrice"
-                                           GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                                           GridPane.rowIndex="1" GridPane.columnIndex="1" editable="false"/>
 
                                 <Label text="Waga"
                                        GridPane.rowIndex="2" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfEngineWeight"
-                                           GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                                           GridPane.rowIndex="2" GridPane.columnIndex="1" editable="false"/>
 
                                 <Label text="Obroty"
                                        GridPane.rowIndex="3" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfEngineCurrent"
-                                           GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                                           GridPane.rowIndex="3" GridPane.columnIndex="1" editable="false"/>
 
                                 <HBox spacing="5.0"
                                       GridPane.rowIndex="4" GridPane.columnIndex="0"
@@ -191,22 +191,22 @@
                                 <Label text="Nazwa"
                                        GridPane.rowIndex="0" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfGearClutchName"
-                                           GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                           GridPane.rowIndex="0" GridPane.columnIndex="1" editable="false"/>
 
                                 <Label text="Cena"
                                        GridPane.rowIndex="1" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfClutchPrice"
-                                           GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                                           GridPane.rowIndex="1" GridPane.columnIndex="1" editable="false"/>
 
                                 <Label text="Waga"
                                        GridPane.rowIndex="2" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfClutchWeight"
-                                           GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                                           GridPane.rowIndex="2" GridPane.columnIndex="1" editable="false"/>
 
                                 <Label text="Stan"
                                        GridPane.rowIndex="3" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfClutchCurrent"
-                                           GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                                           GridPane.rowIndex="3" GridPane.columnIndex="1" editable="false"/>
 
                                 <HBox spacing="5.0"
                                       GridPane.rowIndex="4" GridPane.columnIndex="0"
@@ -263,11 +263,7 @@
 
     <center>
         <StackPane>
-            <ImageView fx:id="carImageView" fitWidth="250.0" preserveRatio="true">
-                <image>
-                    <Image url="@images.png"/>
-                </image>
-            </ImageView>
+            <ImageView fx:id="carImageView" preserveRatio="true"/>
         </StackPane>
     </center>
 
