@@ -80,27 +80,27 @@ public class HelloController {
             return;
         }
 
-        // Samochód
+
         tfCarModel.setText(aktualnySamochód.getModel());
         tfCarPlate.setText(aktualnySamochód.getNumerRejestracyjny());
         tfCarWeight.setText(String.valueOf(aktualnySamochód.getWaga()));
         tfCarSpeed.setText(String.valueOf(aktualnySamochód.getPrędkość()));
 
-        // Silnik
+
         Silnik silnik = aktualnySamochód.getSilnik();
         tfEngineName.setText(silnik.getNazwa());
         tfEnginePrice.setText(String.valueOf(silnik.getCena()));
         tfEngineWeight.setText(String.valueOf(silnik.getWaga()));
         tfEngineCurrent.setText(String.valueOf(silnik.getObroty()));
 
-        // Skrzynia
+
         SkrzyniaBiegów skrzynia = aktualnySamochód.getSkrzynia();
         tfGearName.setText(skrzynia.getNazwa());
         tfGearPrice.setText(String.valueOf(skrzynia.getCena()));
         tfGearWeight.setText(String.valueOf(skrzynia.getWaga()));
         tfGearCurrent.setText(String.valueOf(skrzynia.getBieg()));
 
-        // Sprzęgło
+
         Sprzęgło sprzęgło = aktualnySamochód.getSprzęgło();
         tfGearClutchName.setText(sprzęgło.getNazwa());
         tfClutchPrice.setText(String.valueOf(sprzęgło.getCena()));

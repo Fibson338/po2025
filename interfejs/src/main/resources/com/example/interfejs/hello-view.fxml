@@ -13,7 +13,7 @@
             prefHeight="1024.0" prefWidth="1024.0"
             fx:controller="com.example.interfejs.HelloController"
             xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml">
+            xmlns:fx="http://javafx.com/fxml" >
 
     <left>
         <VBox prefWidth="260" spacing="0.0">
@@ -35,31 +35,26 @@
                                 <RowConstraints/>
                             </rowConstraints>
                             <children>
-                                <!-- wiersz 0 -->
                                 <Label text="Model"
                                        GridPane.rowIndex="0" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfCarModel"
                                            GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-                                <!-- wiersz 1 -->
                                 <Label text="Nr rejestracyjny"
                                        GridPane.rowIndex="1" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfCarPlate"
                                            GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
-                                <!-- wiersz 2 -->
                                 <Label text="Waga"
                                        GridPane.rowIndex="2" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfCarWeight"
                                            GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
-                                <!-- wiersz 3 -->
                                 <Label text="Prędkość"
                                        GridPane.rowIndex="3" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfCarSpeed"
                                            GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 
-                                <!-- wiersz 4: przyciski -->
                                 <HBox spacing="5.0"
                                       GridPane.rowIndex="4" GridPane.columnIndex="0"
                                       GridPane.columnSpan="2">
@@ -75,7 +70,6 @@
                     </content>
                 </TitledPane>
 
-                <!-- Skrzynia biegów -->
                 <TitledPane text="Skrzynia Biegów" expanded="true">
                     <content>
                         <GridPane hgap="5.0" vgap="5.0">
@@ -92,25 +86,21 @@
                             </rowConstraints>
 
                             <children>
-                                <!-- Wiersz 1 -->
                                 <Label text="Nazwa"
                                        GridPane.rowIndex="0" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfGearName"
                                            GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-                                <!-- Wiersz 2 -->
                                 <Label text="Cena"
                                        GridPane.rowIndex="1" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfGearPrice"
                                            GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
-                                <!-- Wiersz 3 -->
                                 <Label text="Waga"
                                        GridPane.rowIndex="2" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfGearWeight"
                                            GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
-                                <!-- Wiersz 4 -->
                                 <Label text="Bieg"
                                        GridPane.rowIndex="3" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfGearCurrent"
@@ -131,7 +121,6 @@
                     </content>
                 </TitledPane>
 
-                <!-- Silnik -->
                 <TitledPane text="Silnik" expanded="true">
                     <content>
                         <GridPane hgap="5.0" vgap="5.0">
@@ -148,25 +137,21 @@
                             </rowConstraints>
 
                             <children>
-                                <!-- Wiersz 1 -->
                                 <Label text="Nazwa"
                                        GridPane.rowIndex="0" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfEngineName"
                                            GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-                                <!-- Wiersz 2 -->
                                 <Label text="Cena"
                                        GridPane.rowIndex="1" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfEnginePrice"
                                            GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
-                                <!-- Wiersz 3 -->
                                 <Label text="Waga"
                                        GridPane.rowIndex="2" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfEngineWeight"
                                            GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
-                                <!-- Wiersz 4 -->
                                 <Label text="Obroty"
                                        GridPane.rowIndex="3" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfEngineCurrent"
@@ -187,7 +172,6 @@
                     </content>
                 </TitledPane>
 
-                <!-- Sprzęgło -->
                 <TitledPane text="Sprzęgło" expanded="true">
                     <content>
                         <GridPane hgap="5.0" vgap="5.0">
@@ -204,25 +188,21 @@
                             </rowConstraints>
 
                             <children>
-                                <!-- Wiersz 1 -->
                                 <Label text="Nazwa"
                                        GridPane.rowIndex="0" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfGearClutchName"
                                            GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-                                <!-- Wiersz 2 -->
                                 <Label text="Cena"
                                        GridPane.rowIndex="1" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfClutchPrice"
                                            GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
-                                <!-- Wiersz 3 -->
                                 <Label text="Waga"
                                        GridPane.rowIndex="2" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfClutchWeight"
                                            GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
-                                <!-- Wiersz 4 -->
                                 <Label text="Stan"
                                        GridPane.rowIndex="3" GridPane.columnIndex="0"/>
                                 <TextField fx:id="tfClutchCurrent"
@@ -249,12 +229,11 @@
     <top>
         <VBox>
 
-            <!-- GÓRNE MENU -->
             <MenuBar>
                 <menus>
                     <Menu text="Plik">
                         <items>
-                            <MenuItem text="Nowy"    onAction="#onMenuNowy"/>
+                            <MenuItem text="Nowy" onAction="#onMenuNowy"/>
                             <MenuItem text="Zamknij" onAction="#onMenuZamknij"/>
                         </items>
                     </Menu>
@@ -286,8 +265,7 @@
         <StackPane>
             <ImageView fx:id="carImageView" fitWidth="250.0" preserveRatio="true">
                 <image>
-                    <!-- @ oznacza plik z tej samej paczki co FXML -->
-                    <Image url="@images.png" />
+                    <Image url="@images.png"/>
                 </image>
             </ImageView>
         </StackPane>
