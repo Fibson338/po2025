@@ -24,10 +24,12 @@ public class Silnik extends Komponent {
     }
 
     public void zwiększObroty() {
-        if (włączony &&obroty < 6250) {
+        if (włączony && obroty < 3000) {
             obroty += 250;
+            if (obroty > 3000) obroty = 3000;
         }
-    }
+
+}
 
     public void zmniejszObroty() {
         if (włączony && obroty != 0) {

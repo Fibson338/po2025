@@ -2,7 +2,6 @@ package com.example.samochod;
 
 public class SkrzyniaBiegów extends Komponent {
 
-    // -1 – wsteczny, 0 – luz, 1..6 – biegi do przodu
     private int bieg;
 
     public SkrzyniaBiegów(String nazwa, double cena, double waga) {
@@ -17,7 +16,7 @@ public class SkrzyniaBiegów extends Komponent {
     }
 
     public void zmniejszBieg() {
-        if (bieg > -1) {  // nie schodzimy poniżej wstecznego
+        if (bieg > -1) {
             bieg--;
         }
     }

@@ -212,7 +212,7 @@
                                       GridPane.rowIndex="4" GridPane.columnIndex="0"
                                       GridPane.columnSpan="2">
                                     <children>
-                                        <Button fx:id="zaciągnijButton" text="Zaciągnij"
+                                        <Button fx:id="wciśnijButton" text="Wciśnij"
                                                 onAction="#onzaciągnijButton"/>
                                         <Button fx:id="zwolnijButton" text="Zwolnij"
                                                 onAction="#onzwolnijButton"/>
@@ -262,9 +262,12 @@
     </top>
 
     <center>
-        <StackPane>
-            <ImageView fx:id="carImageView" preserveRatio="true"/>
-        </StackPane>
+        <Pane fx:id="mapa"  style="-fx-background-color: #2ecc71;">
+            <children>
+                <ImageView fx:id="carImageView" preserveRatio="true"/>
+            </children>
+        </Pane>
     </center>
+
 
 </BorderPane>

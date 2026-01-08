@@ -31,7 +31,6 @@ public class DodajSamochodController {
 
     @FXML
     public void initialize() {
-        // przykładowe opcje – możesz dodać ile chcesz
         engineComboBox.getItems().addAll(
                 new Silnik("1.6 Benzyna", 8000, 120),
                 new Silnik("2.0 Diesel", 11000, 140)
@@ -75,7 +74,8 @@ public class DodajSamochodController {
             return;
         }
 
-        Samochód nowy = new Samochód(model, reg, weight, silnik, skrzynia, sprzęgło);
+        Samochód nowy = new Samochód(model, reg, weight, silnik, skrzynia, sprzęgło, 0, 0);
+
         mainController.addCarToList(nowy);
 
         Stage stage = (Stage) confirmButton.getScene().getWindow();

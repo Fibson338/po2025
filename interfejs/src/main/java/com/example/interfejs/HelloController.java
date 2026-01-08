@@ -1,9 +1,12 @@
 package com.example.interfejs;
 
+import com.example.samochod.Listener;
+import com.example.samochod.Pozycja;
 import com.example.samochod.Samochód;
 import com.example.samochod.Silnik;
 import com.example.samochod.SkrzyniaBiegów;
 import com.example.samochod.Sprzęgło;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,11 +14,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloController {
+public class HelloController implements Listener {
 
     @FXML private Label welcomeText;
 
@@ -55,6 +59,8 @@ public class HelloController {
     @FXML private Button addCarButton;
     @FXML private Button removeCarButton;
 
+    @FXML private Pane mapa;
+
     @FXML private ImageView carImageView;
 
     private Samochód aktualnySamochód;
@@ -64,7 +70,17 @@ public class HelloController {
 
         samochodComboBox.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldCar, newCar) -> {
+
+                    if (oldCar != null) {
+                        oldCar.removeListener(this);
+                    }
+
                     aktualnySamochód = newCar;
+
+                    if (newCar != null) {
+                        newCar.addListener(this);
+                    }
+
                     refresh();
                 }
         );
@@ -74,42 +90,68 @@ public class HelloController {
         );
 
         carImageView.setImage(carImage);
-        carImageView.setFitWidth(250);
+
+        carImageView.setFitWidth(60);
         carImageView.setPreserveRatio(true);
+
         carImageView.setTranslateX(0);
         carImageView.setTranslateY(0);
+
+        mapa.setOnMouseClicked(event -> {
+            if (aktualnySamochód == null) return;
+            Pozycja nowaPozycja = new Pozycja(event.getX(), event.getY());
+            aktualnySamochód.jedzDo(nowaPozycja);
+        });
 
         refresh();
     }
 
+    @Override
+    public void update() {
+        refresh();
+    }
+
     private void refresh() {
-        if (aktualnySamochód == null) {
-            clearFields();
-            return;
+        Runnable ui = () -> {
+            if (aktualnySamochód == null) {
+                clearFields();
+                return;
+            }
+
+            tfCarModel.setText(aktualnySamochód.getModel());
+            tfCarPlate.setText(aktualnySamochód.getNumerRejestracyjny());
+            tfCarWeight.setText(String.valueOf(aktualnySamochód.getWaga()));
+            tfCarSpeed.setText(String.valueOf(aktualnySamochód.getPrędkość()));
+
+            Silnik silnik = aktualnySamochód.getSilnik();
+            tfEngineName.setText(silnik.getNazwa());
+            tfEnginePrice.setText(String.valueOf(silnik.getCena()));
+            tfEngineWeight.setText(String.valueOf(silnik.getWaga()));
+            tfEngineCurrent.setText(String.valueOf(silnik.getObroty()));
+
+            SkrzyniaBiegów skrzynia = aktualnySamochód.getSkrzynia();
+            tfGearName.setText(skrzynia.getNazwa());
+            tfGearPrice.setText(String.valueOf(skrzynia.getCena()));
+            tfGearWeight.setText(String.valueOf(skrzynia.getWaga()));
+            tfGearCurrent.setText(String.valueOf(skrzynia.getBieg()));
+
+            Sprzęgło sprzęgło = aktualnySamochód.getSprzęgło();
+            tfGearClutchName.setText(sprzęgło.getNazwa());
+            tfClutchPrice.setText(String.valueOf(sprzęgło.getCena()));
+            tfClutchWeight.setText(String.valueOf(sprzęgło.getWaga()));
+            tfClutchCurrent.setText(
+                    sprzęgło.isWciśnięte() ? "Wciśnięte" : "Zwolnione"
+            );
+
+            carImageView.setTranslateX(aktualnySamochód.getPozycja().getX());
+            carImageView.setTranslateY(aktualnySamochód.getPozycja().getY());
+        };
+
+        if (Platform.isFxApplicationThread()) {
+            ui.run();
+        } else {
+            Platform.runLater(ui);
         }
-
-        tfCarModel.setText(aktualnySamochód.getModel());
-        tfCarPlate.setText(aktualnySamochód.getNumerRejestracyjny());
-        tfCarWeight.setText(String.valueOf(aktualnySamochód.getWaga()));
-        tfCarSpeed.setText(String.valueOf(aktualnySamochód.getPrędkość()));
-
-        Silnik silnik = aktualnySamochód.getSilnik();
-        tfEngineName.setText(silnik.getNazwa());
-        tfEnginePrice.setText(String.valueOf(silnik.getCena()));
-        tfEngineWeight.setText(String.valueOf(silnik.getWaga()));
-        tfEngineCurrent.setText(String.valueOf(silnik.getObroty()));
-
-        SkrzyniaBiegów skrzynia = aktualnySamochód.getSkrzynia();
-        tfGearName.setText(skrzynia.getNazwa());
-        tfGearPrice.setText(String.valueOf(skrzynia.getCena()));
-        tfGearWeight.setText(String.valueOf(skrzynia.getWaga()));
-        tfGearCurrent.setText(String.valueOf(skrzynia.getBieg()));
-
-        Sprzęgło sprzęgło = aktualnySamochód.getSprzęgło();
-        tfGearClutchName.setText(sprzęgło.getNazwa());
-        tfClutchPrice.setText(String.valueOf(sprzęgło.getCena()));
-        tfClutchWeight.setText(String.valueOf(sprzęgło.getWaga()));
-        tfClutchCurrent.setText(sprzęgło.isWciśnięte() ? "Zaciągnięte" : "Zwolnione");
     }
 
     private void clearFields() {
@@ -138,6 +180,8 @@ public class HelloController {
         Samochód selected = samochodComboBox.getSelectionModel().getSelectedItem();
         if (selected == null) return;
 
+        selected.removeListener(this);
+
         samochodComboBox.getItems().remove(selected);
 
         if (!samochodComboBox.getItems().isEmpty()) {
@@ -148,21 +192,17 @@ public class HelloController {
         }
     }
 
-    // ====== AKCJE (po każdej refresh - u Ciebie już było OK) ======
+    @FXML private void onwłączButton() { if (aktualnySamochód != null) aktualnySamochód.włącz(); }
+    @FXML private void onwyłączButton() { if (aktualnySamochód != null) aktualnySamochód.wyłącz(); }
 
-    @FXML private void onwłączButton() { if (aktualnySamochód != null) { aktualnySamochód.włącz(); refresh(); } }
-    @FXML private void onwyłączButton() { if (aktualnySamochód != null) { aktualnySamochód.wyłącz(); refresh(); } }
+    @FXML private void onzwiększbiegButton() { if (aktualnySamochód != null) aktualnySamochód.zwiększBieg(); }
+    @FXML private void onzmniejszbiegButton() { if (aktualnySamochód != null) aktualnySamochód.zmniejszBieg(); }
 
-    @FXML private void onzwiększbiegButton() { if (aktualnySamochód != null) { aktualnySamochód.zwiększBieg(); refresh(); } }
-    @FXML private void onzmniejszbiegButton() { if (aktualnySamochód != null) { aktualnySamochód.zmniejszBieg(); refresh(); } }
+    @FXML private void ondodajgazuButton() { if (aktualnySamochód != null) aktualnySamochód.dodajGazu(); }
+    @FXML private void onluzujButton() { if (aktualnySamochód != null) aktualnySamochód.luzujGazu(); }
 
-    @FXML private void ondodajgazuButton() { if (aktualnySamochód != null) { aktualnySamochód.dodajGazu(); refresh(); } }
-    @FXML private void onluzujButton() { if (aktualnySamochód != null) { aktualnySamochód.luzujGazu(); refresh(); } }
-
-    @FXML private void onzaciągnijButton() { if (aktualnySamochód != null) { aktualnySamochód.zaciągnijSprzęgło(); refresh(); } }
-    @FXML private void onzwolnijButton() { if (aktualnySamochód != null) { aktualnySamochód.zwolnijSprzęgło(); refresh(); } }
-
-    // ====== DODAWANIE AUTA: NOWE OKNO (Stage) ======
+    @FXML private void onzaciągnijButton() { if (aktualnySamochód != null) aktualnySamochód.zaciągnijSprzęgło(); }
+    @FXML private void onzwolnijButton() { if (aktualnySamochód != null) aktualnySamochód.zwolnijSprzęgło(); }
 
     @FXML
     private void onAddCarButton() throws IOException {
@@ -181,17 +221,13 @@ public class HelloController {
         stage.show();
     }
 
-    // Ta metoda będzie wołana z DodajSamochodController
     public void addCarToList(Samochód nowy) {
         samochodComboBox.getItems().add(nowy);
         samochodComboBox.getSelectionModel().select(nowy);
-        aktualnySamochód = nowy;
-        refresh();
     }
 
     @FXML private void onRemoveCarButton() { removeSelectedCar(); }
 
-    // ====== MENU ======
     @FXML private void onMenuNowy() { clearFields(); }
     @FXML private void onMenuZamknij() { Platform.exit(); }
     @FXML private void onMenuUsun() { removeSelectedCar(); }
