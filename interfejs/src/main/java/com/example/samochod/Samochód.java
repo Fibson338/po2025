@@ -21,7 +21,7 @@ public class Samochód extends Thread {
     private final List<Listener> listeners = new ArrayList<>();
 
     private static final int MAX_RPM = 3000;
-    private static final int IDLE_RPM = 0;
+    private static final int MIN_RPM_HIGH_GEARS = 2000;
 
     public Samochód(String model,
                     String numerRejestracyjny,
@@ -46,34 +46,40 @@ public class Samochód extends Thread {
         start();
     }
 
-    public void addListener(Listener l) { listeners.add(l); }
-    public void removeListener(Listener l) { listeners.remove(l); }
+    public void addListener(Listener l) {
+        if (l != null && !listeners.contains(l)) {
+            listeners.add(l);
+        }
+    }
+
+    public void removeListener(Listener l) {
+        listeners.remove(l);
+    }
 
     private void notifyListeners() {
         var snapshot = new java.util.ArrayList<>(listeners);
         for (Listener l : snapshot) {
-            if (l != null) {
-                l.update();
-            }
+            if (l != null) l.update();
         }
     }
 
-
-
-
     public void jedzDo(Pozycja nowaPozycja) {
-        if (!isWłączony()) return;
+        if (!isWłączony()) {
+            throw new IllegalStateException("Nie pojadę! Włącz silnik.");
+        }
         this.cel = nowaPozycja;
+        notifyListeners();
     }
+
 
     public Pozycja getPozycja() { return pozycja; }
 
     @Override
     public void run() {
-        double deltat = 0.1; // 100 ms
+        double deltat = 0.1;
 
         while (running) {
-            if (cel != null && prędkość > 0) {
+            if (cel != null && Math.abs(prędkość) > 0) {
 
                 double dx = cel.getX() - pozycja.getX();
                 double dy = cel.getY() - pozycja.getY();
@@ -83,7 +89,7 @@ public class Samochód extends Thread {
                     pozycja.set(cel.getX(), cel.getY());
                     cel = null;
                 } else {
-                    double v = Math.max(prędkość, 20);
+                    double v = Math.max(Math.abs(prędkość), 20);
                     pozycja.przesun(v * deltat * dx / dist,
                             v * deltat * dy / dist);
                 }
@@ -99,7 +105,7 @@ public class Samochód extends Thread {
 
     public void włącz() {
         silnik.włącz();
-        silnik.zeroObroty();
+        silnik.setObroty(0);
         notifyListeners();
     }
 
@@ -118,20 +124,14 @@ public class Samochód extends Thread {
     public void zwiększBieg() {
         if (!isWłączony()) return;
         if (!sprzęgło.isWciśnięte()) return;
-
         skrzynia.zwiększBieg();
-        silnik.zeroObroty();
         notifyListeners();
     }
 
     public void zmniejszBieg() {
         if (!isWłączony()) return;
         if (!sprzęgło.isWciśnięte()) return;
-
         skrzynia.zmniejszBieg();
-
-        silnik.zeroObroty();
-
         notifyListeners();
     }
 
@@ -145,7 +145,16 @@ public class Samochód extends Thread {
         if (!isWłączony()) return;
 
         int bieg = skrzynia.getBieg();
-        if (bieg > 0 && prędkość < minPredkosc(bieg)) return;
+
+        if (bieg >= 2) {
+            double minV = minPredkoscDlaBiegu(bieg);
+
+            if (Math.abs(prędkość) < minV) {
+                silnik.setObroty(2000);
+                double sign = (bieg < 0) ? -1.0 : 1.0;
+                prędkość = sign * minV;
+            }
+        }
 
         sprzęgło.zwolnij();
         notifyListeners();
@@ -154,10 +163,7 @@ public class Samochód extends Thread {
     public void dodajGazu() {
         if (!isWłączony()) return;
 
-        if (silnik.getObroty() < MAX_RPM) {
-            silnik.zwiększObroty();
-            while (silnik.getObroty() > MAX_RPM) silnik.zmniejszObroty();
-        }
+        silnik.zwiększObroty();
 
         if (sprzęgło.isWciśnięte()) {
             notifyListeners();
@@ -165,67 +171,78 @@ public class Samochód extends Thread {
         }
 
         int bieg = skrzynia.getBieg();
-        if (bieg <= 0) {
-            notifyListeners();
-            return;
-        }
-        if (silnik.getObroty() >= MAX_RPM) {
+        if (bieg == 0) {
             notifyListeners();
             return;
         }
 
-        double vmax = maxPredkosc(bieg);
-
-        if (prędkość < vmax) {
-            prędkość = Math.min(vmax, prędkość + przyspieszenie(bieg));
-        }
-
+        ustawPredkoscZObrotow();
         notifyListeners();
     }
 
     public void luzujGazu() {
         if (!isWłączony()) return;
-        silnik.zmniejszObroty();
-        if (prędkość >= 5) prędkość -= 5;
-        else prędkość = 0;
 
+        silnik.zmniejszObroty();
+
+        if (sprzęgło.isWciśnięte() || skrzynia.getBieg() == 0) {
+            if (Math.abs(prędkość) >= 2) prędkość -= Math.signum(prędkość) * 2;
+            else prędkość = 0;
+            notifyListeners();
+            return;
+        }
+
+        ustawPredkoscZObrotow();
         notifyListeners();
+    }
+
+    private void ustawPredkoscZObrotow() {
+        int bieg = skrzynia.getBieg();
+        if (bieg == 0) return;
+
+        double vmax = maxPredkosc(bieg);
+        if (vmax <= 0) return;
+
+        int rpm = silnik.getObroty();
+        if (rpm < 0) rpm = 0;
+        if (rpm > MAX_RPM) rpm = MAX_RPM;
+
+        double targetAbs = (rpm / (double) MAX_RPM) * vmax;
+
+        if (bieg >= 2) {
+            double minV = minPredkoscDlaBiegu(bieg);
+            if (targetAbs > 0 && targetAbs < minV) {
+                targetAbs = minV;
+                silnik.setObroty(MIN_RPM_HIGH_GEARS);
+            }
+        }
+
+        double sign = (bieg < 0) ? -1.0 : 1.0;
+        double target = sign * targetAbs;
+
+        double maxStep = 8.0;
+        double delta = target - prędkość;
+
+        if (Math.abs(delta) <= maxStep) prędkość = target;
+        else prędkość += Math.signum(delta) * maxStep;
     }
 
     private double maxPredkosc(int bieg) {
         return switch (bieg) {
+            case -1 -> 20;
             case 1 -> 30;
             case 2 -> 60;
             case 3 -> 90;
             case 4 -> 130;
             case 5 -> 180;
-            case 6 -> 240;
             default -> 0;
         };
     }
 
-    private double minPredkosc(int bieg) {
-        return switch (bieg) {
-            case 1 -> 0;
-            case 2 -> 15;
-            case 3 -> 35;
-            case 4 -> 55;
-            case 5 -> 75;
-            case 6 -> 105;
-            default -> 0;
-        };
-    }
-
-    private double przyspieszenie(int bieg) {
-        return switch (bieg) {
-            case 1 -> 10;
-            case 2 -> 8;
-            case 3 -> 6;
-            case 4 -> 4.5;
-            case 5 -> 3.5;
-            case 6 -> 2.5;
-            default -> 0;
-        };
+    private double minPredkoscDlaBiegu(int bieg) {
+        if (bieg < 2) return 0;
+        double vmax = maxPredkosc(bieg);
+        return (MIN_RPM_HIGH_GEARS / (double) MAX_RPM) * vmax;
     }
 
     public String getModel() { return model; }

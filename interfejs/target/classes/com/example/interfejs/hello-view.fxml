@@ -19,7 +19,6 @@
         <VBox prefWidth="260" spacing="0.0">
             <children>
 
-                <!-- Samochód -->
                 <TitledPane text="Samochód" expanded="true">
                     <content>
                         <GridPane hgap="5.0" vgap="5.0">

@@ -5,6 +5,7 @@ import com.example.samochod.Silnik;
 import com.example.samochod.SkrzyniaBiegów;
 import com.example.samochod.Sprzęgło;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -47,13 +48,26 @@ public class DodajSamochodController {
         );
     }
 
+    private void pokazBlad(String wiadomosc) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Błąd");
+        alert.setHeaderText(null);
+        alert.setContentText(wiadomosc);
+        alert.showAndWait();
+    }
+
     @FXML
     private void onConfirmButton() {
+        if (mainController == null) {
+            pokazBlad("Błąd aplikacji: brak referencji do głównego kontrolera (mainController).");
+            return;
+        }
+
         String model = modelTextField.getText();
         String reg = registrationTextField.getText();
 
         if (model == null || model.isBlank() || reg == null || reg.isBlank()) {
-            System.out.println("Model i numer rejestracyjny nie mogą być puste.");
+            pokazBlad("Model i numer rejestracyjny nie mogą być puste.");
             return;
         }
 
@@ -61,7 +75,7 @@ public class DodajSamochodController {
         try {
             weight = Double.parseDouble(weightTextField.getText().replace(',', '.'));
         } catch (NumberFormatException e) {
-            System.out.println("Niepoprawna waga.");
+            pokazBlad("Niepoprawna waga. Podaj liczbę, np. 1200 lub 1200,5.");
             return;
         }
 
@@ -70,16 +84,19 @@ public class DodajSamochodController {
         Sprzęgło sprzęgło = clutchComboBox.getValue();
 
         if (silnik == null || skrzynia == null || sprzęgło == null) {
-            System.out.println("Wybierz silnik, skrzynię i sprzęgło.");
+            pokazBlad("Wybierz silnik, skrzynię i sprzęgło.");
             return;
         }
 
-        Samochód nowy = new Samochód(model, reg, weight, silnik, skrzynia, sprzęgło, 0, 0);
+        try {
+            Samochód nowy = new Samochód(model, reg, weight, silnik, skrzynia, sprzęgło, 0, 0);
+            mainController.addCarToList(nowy);
 
-        mainController.addCarToList(nowy);
-
-        Stage stage = (Stage) confirmButton.getScene().getWindow();
-        stage.close();
+            Stage stage = (Stage) confirmButton.getScene().getWindow();
+            stage.close();
+        } catch (Exception e) {
+            pokazBlad("Nie udało się utworzyć samochodu: " + e.getMessage());
+        }
     }
 
     @FXML

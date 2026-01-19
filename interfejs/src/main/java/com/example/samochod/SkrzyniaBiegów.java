@@ -10,15 +10,11 @@ public class SkrzyniaBiegów extends Komponent {
     }
 
     public void zwiększBieg() {
-        if (bieg < 6) {
-            bieg++;
-        }
+        setBieg(bieg + 1);
     }
 
     public void zmniejszBieg() {
-        if (bieg > -1) {
-            bieg--;
-        }
+        setBieg(bieg - 1);
     }
 
     public int getBieg() {
@@ -26,6 +22,8 @@ public class SkrzyniaBiegów extends Komponent {
     }
 
     public void setBieg(int bieg) {
+        if (bieg < -1) bieg = -1;
+        if (bieg > 5) bieg = 5;
         this.bieg = bieg;
     }
 }

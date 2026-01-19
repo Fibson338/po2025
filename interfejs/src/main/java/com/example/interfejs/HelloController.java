@@ -60,7 +60,6 @@ public class HelloController implements Listener {
     @FXML private Button removeCarButton;
 
     @FXML private Pane mapa;
-
     @FXML private ImageView carImageView;
 
     private Samochód aktualnySamochód;
@@ -79,6 +78,9 @@ public class HelloController implements Listener {
 
                     if (newCar != null) {
                         newCar.addListener(this);
+                        System.out.println("Wybrano samochód: " + newCar);
+                    } else {
+                        System.out.println("Nie wybrano samochodu.");
                     }
 
                     refresh();
@@ -90,17 +92,26 @@ public class HelloController implements Listener {
         );
 
         carImageView.setImage(carImage);
-
         carImageView.setFitWidth(60);
         carImageView.setPreserveRatio(true);
-
         carImageView.setTranslateX(0);
         carImageView.setTranslateY(0);
 
         mapa.setOnMouseClicked(event -> {
-            if (aktualnySamochód == null) return;
-            Pozycja nowaPozycja = new Pozycja(event.getX(), event.getY());
-            aktualnySamochód.jedzDo(nowaPozycja);
+            System.out.println("Klik mapy: X=" + event.getX() + " Y=" + event.getY());
+
+            if (aktualnySamochód == null) {
+                System.out.println("Błąd: Najpierw wybierz samochód.");
+                return;
+            }
+
+            try {
+                Pozycja nowaPozycja = new Pozycja(event.getX(), event.getY());
+                aktualnySamochód.jedzDo(nowaPozycja);
+                System.out.println("Ustawiono cel jazdy: " + nowaPozycja);
+            } catch (Exception e) {
+                System.out.println("Błąd: " + e.getMessage());
+            }
         });
 
         refresh();
@@ -108,7 +119,7 @@ public class HelloController implements Listener {
 
     @Override
     public void update() {
-        refresh();
+        Platform.runLater(this::refresh);
     }
 
     private void refresh() {
@@ -178,9 +189,13 @@ public class HelloController implements Listener {
 
     private void removeSelectedCar() {
         Samochód selected = samochodComboBox.getSelectionModel().getSelectedItem();
-        if (selected == null) return;
+        if (selected == null) {
+            System.out.println("Usuń: brak wybranego samochodu.");
+            return;
+        }
 
         selected.removeListener(this);
+        System.out.println("Usunięto samochód: " + selected);
 
         samochodComboBox.getItems().remove(selected);
 
@@ -192,25 +207,167 @@ public class HelloController implements Listener {
         }
     }
 
-    @FXML private void onwłączButton() { if (aktualnySamochód != null) aktualnySamochód.włącz(); }
-    @FXML private void onwyłączButton() { if (aktualnySamochód != null) aktualnySamochód.wyłącz(); }
-
-    @FXML private void onzwiększbiegButton() { if (aktualnySamochód != null) aktualnySamochód.zwiększBieg(); }
-    @FXML private void onzmniejszbiegButton() { if (aktualnySamochód != null) aktualnySamochód.zmniejszBieg(); }
-
-    @FXML private void ondodajgazuButton() { if (aktualnySamochód != null) aktualnySamochód.dodajGazu(); }
-    @FXML private void onluzujButton() { if (aktualnySamochód != null) aktualnySamochód.luzujGazu(); }
-
-    @FXML private void onzaciągnijButton() { if (aktualnySamochód != null) aktualnySamochód.zaciągnijSprzęgło(); }
-    @FXML private void onzwolnijButton() { if (aktualnySamochód != null) aktualnySamochód.zwolnijSprzęgło(); }
+    @FXML
+    private void onwłączButton() {
+        if (aktualnySamochód == null) {
+            System.out.println("Błąd: Nie wybrano samochodu.");
+            return;
+        }
+        try {
+            aktualnySamochód.włącz();
+            System.out.println("Silnik włączony.");
+        } catch (Exception e) {
+            System.out.println("Błąd: " + e.getMessage());
+        }
+    }
 
     @FXML
-    private void onAddCarButton() throws IOException {
-        openAddCarWindow();
+    private void onwyłączButton() {
+        if (aktualnySamochód == null) {
+            System.out.println("Błąd: Nie wybrano samochodu.");
+            return;
+        }
+        try {
+            aktualnySamochód.wyłącz();
+            System.out.println("Silnik wyłączony, bieg=0, prędkość=0.");
+        } catch (Exception e) {
+            System.out.println("Błąd: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void onzwiększbiegButton() {
+        if (aktualnySamochód == null) {
+            System.out.println("Błąd: Nie wybrano samochodu.");
+            return;
+        }
+        int before = aktualnySamochód.getSkrzynia().getBieg();
+        try {
+            aktualnySamochód.zwiększBieg();
+            int after = aktualnySamochód.getSkrzynia().getBieg();
+            System.out.println("Bieg: " + before + " -> " + after);
+        } catch (Exception e) {
+            System.out.println("Błąd: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void onzmniejszbiegButton() {
+        if (aktualnySamochód == null) {
+            System.out.println("Błąd: Nie wybrano samochodu.");
+            return;
+        }
+        int before = aktualnySamochód.getSkrzynia().getBieg();
+        try {
+            aktualnySamochód.zmniejszBieg();
+            int after = aktualnySamochód.getSkrzynia().getBieg();
+            System.out.println("Bieg: " + before + " -> " + after);
+        } catch (Exception e) {
+            System.out.println("Błąd: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void ondodajgazuButton() {
+        if (aktualnySamochód == null) {
+            System.out.println("Błąd: Nie wybrano samochodu.");
+            return;
+        }
+        double beforeV = aktualnySamochód.getPrędkość();
+        int beforeRpm = aktualnySamochód.getSilnik().getObroty();
+
+        try {
+            aktualnySamochód.dodajGazu();
+            double afterV = aktualnySamochód.getPrędkość();
+            int afterRpm = aktualnySamochód.getSilnik().getObroty();
+
+            if (beforeV != afterV) {
+                System.out.println("Prędkość: " + beforeV + " -> " + afterV);
+            } else {
+                System.out.println("Prędkość bez zmian: " + afterV);
+            }
+
+            if (beforeRpm != afterRpm) {
+                System.out.println("Obroty: " + beforeRpm + " -> " + afterRpm);
+            } else {
+                System.out.println("Obroty bez zmian: " + afterRpm);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Błąd: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void onluzujButton() {
+        if (aktualnySamochód == null) {
+            System.out.println("Błąd: Nie wybrano samochodu.");
+            return;
+        }
+        double beforeV = aktualnySamochód.getPrędkość();
+        int beforeRpm = aktualnySamochód.getSilnik().getObroty();
+
+        try {
+            aktualnySamochód.luzujGazu();
+            double afterV = aktualnySamochód.getPrędkość();
+            int afterRpm = aktualnySamochód.getSilnik().getObroty();
+
+            if (beforeV != afterV) {
+                System.out.println("Prędkość: " + beforeV + " -> " + afterV);
+            } else {
+                System.out.println("Prędkość bez zmian: " + afterV);
+            }
+
+            if (beforeRpm != afterRpm) {
+                System.out.println("Obroty: " + beforeRpm + " -> " + afterRpm);
+            } else {
+                System.out.println("Obroty bez zmian: " + afterRpm);
+            }
+
+        } catch (Exception e) {
+            System.out.println("Błąd: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void onzaciągnijButton() {
+        if (aktualnySamochód == null) {
+            System.out.println("Błąd: Nie wybrano samochodu.");
+            return;
+        }
+        try {
+            aktualnySamochód.zaciągnijSprzęgło();
+            System.out.println("Sprzęgło: Wciśnięte");
+        } catch (Exception e) {
+            System.out.println("Błąd: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void onzwolnijButton() {
+        if (aktualnySamochód == null) {
+            System.out.println("Błąd: Nie wybrano samochodu.");
+            return;
+        }
+        try {
+            aktualnySamochód.zwolnijSprzęgło();
+            System.out.println("Sprzęgło: Zwolnione");
+        } catch (Exception e) {
+            System.out.println("Błąd: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void onAddCarButton() {
+        try {
+            openAddCarWindow();
+        } catch (IOException e) {
+            System.out.println("Błąd: Nie udało się otworzyć okna: " + e.getMessage());
+        }
     }
 
     private void openAddCarWindow() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("DodajSamochod.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/interfejs/DodajSamochod.fxml"));
         Stage stage = new Stage();
         stage.setScene(new Scene(loader.load()));
         stage.setTitle("Dodaj nowy samochód");
@@ -224,11 +381,29 @@ public class HelloController implements Listener {
     public void addCarToList(Samochód nowy) {
         samochodComboBox.getItems().add(nowy);
         samochodComboBox.getSelectionModel().select(nowy);
+        System.out.println("Dodano samochód: " + nowy);
     }
 
-    @FXML private void onRemoveCarButton() { removeSelectedCar(); }
+    @FXML
+    private void onRemoveCarButton() {
+        removeSelectedCar();
+    }
 
-    @FXML private void onMenuNowy() { clearFields(); }
-    @FXML private void onMenuZamknij() { Platform.exit(); }
-    @FXML private void onMenuUsun() { removeSelectedCar(); }
+    @FXML
+    private void onMenuNowy() {
+        System.out.println("Menu: Nowy");
+        clearFields();
+    }
+
+    @FXML
+    private void onMenuZamknij() {
+        System.out.println("Menu: Zamknij");
+        Platform.exit();
+    }
+
+    @FXML
+    private void onMenuUsun() {
+        System.out.println("Menu: Usuń");
+        removeSelectedCar();
+    }
 }
